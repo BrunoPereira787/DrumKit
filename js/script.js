@@ -23,11 +23,35 @@ const tocarSom = (letra, som) => {
     document.addEventListener('click', function(e){
         const el = e.target;
         if(el.classList.contains(`${letra}`)){
+           adicionarClassEfeito(letra);
            const audio = new Audio(`./sounds/${som}`);
            audio.play();
+           removeClassEfeito(letra);
         }
         return;
     });
+}
+
+const adicionarClassEfeito = (letra) => {
+    document.querySelector(`.${letra}`).classList.add('active');
+}
+
+const removeClassEfeito = (letra) => {
+    const div = document.querySelector(`.${letra}`);
+    const removeActive = () => div.classList.remove('active');
+    div.addEventListener('transitionend', removeActive);
+}
+
+const tocarSomTecla = (letra, som) => {
+    document.addEventListener('keyup', function(e){
+        if(e.code === `Key${letra.toUpperCase()}`){
+            adicionarClassEfeito(letra);
+            const audio = new Audio(`./sounds/${som}`);
+            audio.play(); 
+            removeClassEfeito(letra);
+        }      
+        return;
+    }); 
 }
 
 const letraSons = () => {
@@ -38,16 +62,6 @@ const letraSons = () => {
         tocarSomTecla(letra, som);       
     }
 }   
-
-const tocarSomTecla = (letra, som) => {
-    document.addEventListener('keypress', function(e){
-        if(e.code === `Key${letra.toUpperCase()}`){
-            const audio = new Audio(`./sounds/${som}`);
-            audio.play(); 
-        }      
-        return;
-    }); 
-}
 
 letraSons();
 
